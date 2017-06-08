@@ -10,18 +10,25 @@ var showBox = {
 };
 var css = {
   "body": {
-    "color": "red",
-    "width": (function() {
-      var out=200;
-      if (boxWidth > 50) {
-        out += boxWidth;
-      }
-      return out + "px";
-    })()
+    "h1":{
+      "font-size":"20px",
+      "width":"100%",
+      "text-align":"center",
+      "font-family":"微軟正黑體",
+    },
+    "background-color": "pink",
   },
   "div": {
     "font-size": (boxWidth + "%"),
     ".box": showBox
   },
-  ".box": showBox
+  ".box": showBox,
+  "a": {
+    ":hover": {
+      "padding": "10px"
+    },
+    ":before": {
+       "content":"''"
+    }
+  }
 };
