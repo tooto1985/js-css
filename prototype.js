@@ -7,7 +7,12 @@ fs.readFile(process.argv[2],function(err, data) {
   	var script = new vm.Script(data.toString());
   	var context = new vm.createContext(sandbox);
   	script.runInContext(context);
-  	core(sandbox.css);
+    if (!sandbox.css || typeof sandbox.css !== "object") {
+      console.log("not css global variable as object");
+    } else {
+      core(sandbox.css);  
+    }
+  	
   } else {
     console.log("not found");
   }
