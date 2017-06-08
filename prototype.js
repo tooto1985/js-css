@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 var fs = require("fs");
 var vm = require("vm");
-fs.readFile(process.argv[2], function (err, data) {
+
+var input = process.argv[2];
+var output = process.argv[3];
+var minify = process.argv.some(a => a === "-minify");
+
+if (process.argv.length === 4 && minify) {
+  output = null;
+}
+
+fs.readFile(input, function (err, data) {
   if (!err) {
     var sandbox = {};
     var script = new vm.Script(data.toString());
@@ -10,31 +19,30 @@ fs.readFile(process.argv[2], function (err, data) {
     if (!sandbox.css || typeof sandbox.css !== "object" || Array.isArray(sandbox.css)) {
       console.log("No css global variable object.");
     } else {
-      core(sandbox.css, process.argv[3]);
+      core(sandbox.css, output, minify);
     }
   } else {
     console.log("Not found input file.");
   }
 });
 
-
-function core(output,savefile) {
+function core(output, savefile, isMinify) {
   function parse(name, obj) {
     var code = "";
     var append = "";
-    code += name + " {\n";
+    code += name + (isMinify ? "{" : " {\n");
     for (var a in obj) {
       if (typeof obj[a] !== "object") {
-        code += "  " + a + ":" + obj[a] + ";\n";
+        code += (isMinify ? "" : "  ") + a + ":" + obj[a] + ";" + (isMinify ? "" : "\n");
       } else {
-        var space=" ";
+        var space = " ";
         if (a.startsWith(">") || a.startsWith(":")) {
-          space="";
+          space = "";
         }
         append += parse(name + space + a, obj[a]);
       }
     }
-    code += "}\n";
+    code += isMinify ? "}" : "}\n";
     code += append;
     return code;
   }
@@ -46,12 +54,10 @@ function core(output,savefile) {
     text += parse(key, obj);
   }
   if (savefile) {
-    fs.writeFile(savefile,text,function(err) {
-      if(err) console.log("error");
+    fs.writeFile(savefile, text, function (err) {
+      if (err) console.log("error");
     })
   } else {
     console.log(text);
   }
-  
-  
 }
