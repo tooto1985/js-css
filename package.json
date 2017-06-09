@@ -1,14 +1,14 @@
 {
-  "name": "js-css",
+  "name": "jscss",
   "version": "1.0.0",
   "description": "",
-  "main": "prototype.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Tommy",
+  "license": "MIT",
   "bin": {
-  	"jscss": "prototype.js"
+  	"jscss": "index.js"
   }
 }

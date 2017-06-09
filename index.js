@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+
 var fs = require("fs");
 var vm = require("vm");
 
-var input = process.argv[2];
+var input = ((value = "") => value)(process.argv[2]);
 var output = process.argv[3];
 var minify = process.argv.some(a => a === "-minify");
 
@@ -10,7 +11,7 @@ if (process.argv.length === 4 && minify) {
   output = null;
 }
 
-fs.readFile(input, function (err, data) {
+fs.readFile(input, (err, data) => {
   if (!err) {
     var sandbox = {};
     var script = new vm.Script(data.toString());
@@ -54,9 +55,9 @@ function core(output, savefile, isMinify) {
     text += parse(key, obj);
   }
   if (savefile) {
-    fs.writeFile(savefile, text, function (err) {
+    fs.writeFile(savefile, text, function(err) {
       if (err) console.log("error");
-    })
+    });
   } else {
     console.log(text);
   }
