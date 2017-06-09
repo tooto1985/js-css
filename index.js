@@ -5,7 +5,23 @@ var vm = require("vm");
 
 var input = ((value = "") => value)(process.argv[2]);
 var output = process.argv[3];
-var minify = process.argv.some(a => a === "-minify");
+var minify = process.argv.some(a => a === "-m");
+var help = process.argv.some(a => a === "-h");
+
+if (help || !input) {
+  console.log("");
+  console.log("  Build CSS files using JavaScript syntax.");
+  console.log("");
+  console.log("  Usage:jscss <source> [destination] [-m]");
+  console.log("");
+  console.log("  Options:");
+  console.log("    -m    Minify output css.");
+  console.log("    -h    Help.");
+  console.log("");
+  console.log("  No destination will only show results.");
+  console.log("  The css global variable object is required.");
+  return;
+}
 
 if (process.argv.length === 4 && minify) {
   output = null;
